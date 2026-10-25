@@ -18,8 +18,16 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: "22"
+      - name: Install tools
+        id: install
+        run: cd tools && npm ci
       - name: Tests
-        run: cd tools && npm ci && npm test
+        run: cd tools && npm test
+      # Audits the committed lockfile, dev dependencies included (everything here is dev tooling),
+      # so a new high or critical advisory fails CI without waiting for Dependabot.
+      - name: Audit tools
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: cd tools && npm audit --audit-level=high
       - name: Clean build
         run: OWNER_FIRST_NAME=Test CONTACT_EMAIL=test@example.com node build.mjs
   worker:
@@ -34,8 +42,15 @@ jobs:
           node-version: "22"
       - name: Site tools (the consumer test runs the page's status.js in jsdom)
         run: cd tools && npm ci
+      - name: Install worker
+        id: install
+        run: cd worker && npm ci
       - name: Worker tests
-        run: cd worker && npm ci && npm test
+        run: cd worker && npm test
+      # Full tree on purpose: wrangler is a dev dependency and holds the Cloudflare login.
+      - name: Audit worker
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: cd worker && npm audit --audit-level=high
   secrets:
     runs-on: ubuntu-latest
     timeout-minutes: 15

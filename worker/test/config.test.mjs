@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { GAMES, PROBE_TYPES, parseAddress } from '../src/games.js';
 
 import { WORKER, SITE } from './helpers/site.mjs';
+import { overrideProblem } from './helpers/semver-min.mjs';
 
 const SITE_GAMES = path.join(SITE, 'content', 'games.json');
 
@@ -85,14 +86,20 @@ test('the undici override is exact, patched, and what the lockfile installs', ()
   for (const [key, meta] of Object.entries(lock.packages)) {
     if (key === 'node_modules/undici' || key.endsWith('/node_modules/undici')) assert.equal(meta.version, want, key);
   }
-  // A wrangler bump (say, from Dependabot) may ship a newer undici than the override; the override
-  // must never pull it back down. When this fails, raise the override or drop it.
-  const cmp = (a, b) => { const x = a.split('.').map(Number); const y = b.split('.').map(Number); return x[0] - y[0] || x[1] - y[1] || x[2] - y[2]; };
+  // A wrangler bump (say, from Dependabot) may ship a newer undici than the override, as an exact
+  // pin or a range; the override must never sit below the lowest version that spec allows. When this
+  // fails, raise the override or drop it.
+  let checked = 0;
   for (const [key, meta] of Object.entries(lock.packages)) {
-    const declared = meta.dependencies && meta.dependencies.undici;
-    const exact = declared && /^\d+\.\d+\.\d+$/.test(declared) ? declared : null;
-    if (exact) assert.ok(cmp(want, exact) >= 0, `${key} ships undici ${exact}; the override ${want} would downgrade it`);
+    for (const field of ['dependencies', 'optionalDependencies', 'peerDependencies']) {
+      const declared = meta[field] && meta[field].undici;
+      if (declared === undefined) continue;
+      checked++;
+      const problem = overrideProblem(want, declared);
+      assert.equal(problem, null, `${key} ${field}: ${problem}`);
+    }
   }
+  assert.ok(checked > 0, 'something in the lockfile still declares undici (else drop the override)');
 });
 
 test('compatibility_date is no newer than what the locked workerd supports', () => {

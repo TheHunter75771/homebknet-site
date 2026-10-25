@@ -65,7 +65,7 @@ source (the game PC reporting in), which doesn't exist yet.
 ```bash
 cd worker
 npm test          # node --test, offline; no install needed
-npm run mutate    # breaks 27 guards one at a time and checks the tests catch each one
+npm run mutate    # breaks 31 guards one at a time and checks the tests catch each one
 ```
 
 `fetch`, `connect` and `caches.default` are all faked, so nothing touches the network. One group of tests
