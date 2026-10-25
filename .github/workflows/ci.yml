@@ -10,6 +10,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
         with:
@@ -23,6 +24,7 @@ jobs:
         run: OWNER_FIRST_NAME=Test CONTACT_EMAIL=test@example.com node build.mjs
   worker:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
         with:
@@ -36,6 +38,7 @@ jobs:
         run: cd worker && npm ci && npm test
   secrets:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
         with:

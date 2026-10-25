@@ -93,9 +93,12 @@ const fixture = async (name) => {
 const tick = (ms = 30) => new Promise((r) => setTimeout(r, ms));
 
 // Loads the page, optionally with a fetch result and a clipboard, and runs status.js.
-async function page({ status, fetchError = false, httpStatus = 200, clipboard = null, runJs = true } = {}) {
+// The window is closed by the test's after hook, so a failed assertion can't leave status.js's
+// 60-second poll running and keep the process alive.
+async function page(t, { status, fetchError = false, httpStatus = 200, clipboard = null, runJs = true } = {}) {
   const dom = new JSDOM(html, { url: 'https://homebknet.us/', runScripts: 'outside-only', pretendToBeVisual: true });
   const w = dom.window;
+  t.after(() => w.close());
   w.fetch = async () => {
     if (fetchError) throw new Error('network down');
     return { ok: httpStatus >= 200 && httpStatus < 300, status: httpStatus, json: async () => status };
@@ -106,11 +109,11 @@ async function page({ status, fetchError = false, httpStatus = 200, clipboard = 
   const d = w.document;
   const q = (s) => d.querySelector(s);
   const chipOf = (sel) => { const c = q(sel); return { state: c.getAttribute('data-state'), word: c.querySelector('.chip-word').textContent, icon: c.querySelector('use').getAttribute('href') }; };
-  return { dom, w, d, q, chipOf, close: () => w.close() };
+  return { dom, w, d, q, chipOf };
 }
 
-test('without JavaScript the page is complete and honest', async () => {
-  const p = await page({ runJs: false });
+test('without JavaScript the page is complete and honest', async (t) => {
+  const p = await page(t, { runJs: false });
   const chips = [...p.d.querySelectorAll('[data-chip]')];
   assert.ok(chips.length >= 6);
   for (const c of chips) {
@@ -120,14 +123,20 @@ test('without JavaScript the page is complete and honest', async () => {
   for (const b of p.d.querySelectorAll('[data-copy]')) assert.equal(b.hidden, true, 'copy buttons need JS');
   assert.equal(p.q('#notice').hidden, true);
   assert.equal(p.q('#now-na').hidden, false);
-  assert.ok(html.includes('https://watch.homebknet.us'));
-  assert.ok(html.includes('game.homebknet.us:25565'));
-  assert.ok(html.includes('game.homebknet.us:16261'));
+  // Every link to one of our own hosts is exactly the Watch origin (so not, say,
+  // https://watch.homebknet.us.evil.example), and the addresses to type in are exact too.
+  const own = [...p.d.querySelectorAll('a[href]')].filter((a) => /homebknet/i.test(a.getAttribute('href')));
+  assert.deepEqual(own.map((a) => a.getAttribute('href')), Array(3).fill('https://watch.homebknet.us'));
+  assert.deepEqual(own.map((a) => new URL(a.href).host), Array(3).fill('watch.homebknet.us'));
+  assert.equal(p.q('.cta-row .btn-primary').getAttribute('href'), 'https://watch.homebknet.us');
+  assert.equal(p.q('.browser-row a').getAttribute('href'), 'https://watch.homebknet.us');
+  assert.equal(p.q('.copy-watch [data-copy-value]').textContent, 'https://watch.homebknet.us/watch');
+  assert.deepEqual([...p.d.querySelectorAll('article.game [data-copy-value]')].map((c) => c.textContent),
+    ['game.homebknet.us:25565', 'game.homebknet.us:16261']);
   assert.ok(html.includes(`Ask ${OWNER}.`));
   assert.ok(!/\{\{|<!-- @/.test(html), 'no placeholders left');
   assert.ok(!html.includes('style='), 'no inline styles, the CSP forbids them');
   assert.ok(!/<script(?![^>]*\bsrc=)/.test(html), 'no inline scripts');
-  p.close();
 });
 
 test('optional slots are left out when their URL is unset', () => {
@@ -135,8 +144,8 @@ test('optional slots are left out when their URL is unset', () => {
   assert.ok(!html.includes('About me'));
 });
 
-test('normal night', async () => {
-  const p = await page({ status: await fixture('normal') });
+test('normal night', async (t) => {
+  const p = await page(t, { status: await fixture('normal') });
   assert.deepEqual(p.chipOf('.now-row[data-svc="watch"] [data-chip]'), { state: 'online', word: 'Online', icon: '#i-ok' });
   assert.equal(p.chipOf('[data-svc-chip="watch"]').word, 'Watch: Online');
   assert.equal(p.q('.now-row[data-svc="watch"] [data-detail]').textContent, 'Movies and shows');
@@ -154,11 +163,10 @@ test('normal night', async () => {
   assert.equal(p.q('#watch-alert').hidden, true);
   assert.equal(p.q('#hero-down').hidden, true);
   assert.equal(p.q('#now').getAttribute('data-watch'), 'online');
-  p.close();
 });
 
-test('bad night: Watch offline, games unknown', async () => {
-  const p = await page({ status: await fixture('badnight') });
+test('bad night: Watch offline, games unknown', async (t) => {
+  const p = await page(t, { status: await fixture('badnight') });
   assert.deepEqual(p.chipOf('.now-row[data-svc="watch"] [data-chip]'), { state: 'offline', word: 'Offline', icon: '#i-fail' });
   assert.equal(p.q('#watch-alert').hidden, false);
   assert.equal(p.q('#hero-down').hidden, false);
@@ -167,25 +175,22 @@ test('bad night: Watch offline, games unknown', async () => {
     assert.equal(p.chipOf(`article[data-game="${id}"] [data-chip]`).state, 'unknown');
     assert.equal(p.q(`.now-row[data-game="${id}"] [data-detail]`).textContent, 'Can’t check right now');
   }
-  p.close();
 });
 
-test('status unavailable when the fetch fails', async () => {
-  const p = await page({ fetchError: true });
+test('status unavailable when the fetch fails', async (t) => {
+  const p = await page(t, { fetchError: true });
   for (const c of p.d.querySelectorAll('[data-chip]')) assert.equal(c.getAttribute('data-state'), 'na');
   assert.equal(p.q('#now-updated').textContent, 'Live status couldn’t load');
   assert.equal(p.q('#now-na').hidden, false);
-  p.close();
 });
 
-test('status unavailable on an HTTP error', async () => {
-  const p = await page({ status: {}, httpStatus: 503 });
+test('status unavailable on an HTTP error', async (t) => {
+  const p = await page(t, { status: {}, httpStatus: 503 });
   assert.equal(p.chipOf('[data-svc-chip="watch"]').state, 'na');
-  p.close();
 });
 
-test('maintenance banner shows, then dismisses', async () => {
-  const p = await page({ status: await fixture('maintenance') });
+test('maintenance banner shows, then dismisses', async (t) => {
+  const p = await page(t, { status: await fixture('maintenance') });
   const n = p.q('#notice');
   assert.equal(n.hidden, false);
   assert.equal(n.getAttribute('data-level'), 'info');
@@ -193,39 +198,49 @@ test('maintenance banner shows, then dismisses', async () => {
   assert.deepEqual(p.chipOf('article[data-game="mc-hardcore"] [data-chip]'), { state: 'starting', word: 'Starting', icon: '#i-start' });
   p.q('#notice-x').click();
   assert.equal(n.hidden, true);
-  p.close();
 });
 
-test('warn notice uses the warning icon', async () => {
+test('warn notice uses the warning icon', async (t) => {
   const s = await fixture('normal');
   s.notice = { text: 'Streaming is paused while a drive is checked.', level: 'warn' };
-  const p = await page({ status: s });
+  const p = await page(t, { status: s });
   assert.equal(p.q('#notice').getAttribute('data-level'), 'warn');
   assert.equal(p.q('#notice .notice-ic use').getAttribute('href'), '#i-warn');
-  p.close();
 });
 
-test('malformed data degrades to unknown, not a crash', async () => {
-  const p = await page({ status: { updated: 'not a date', watch: 'nope', games: 'nope', notice: 42 } });
+test('markup in the notice is shown as text, never parsed', async (t) => {
+  const s = await fixture('normal');
+  const text = 'Back soon <img src=x onerror="globalThis.pwned=1"> <b>really</b> & <script>globalThis.pwned=2</script>';
+  s.notice = { text, level: 'info' };
+  const p = await page(t, { status: s });
+  const box = p.q('#notice-text');
+  assert.equal(p.q('#notice').hidden, false);
+  assert.equal(box.textContent, text);
+  assert.equal(box.children.length, 0, 'no elements were created');
+  assert.equal(p.d.querySelectorAll('#notice img, #notice b, #notice script').length, 0);
+  assert.match(box.innerHTML, /^Back soon &lt;img src=x/);
+  assert.equal(p.w.pwned, undefined);
+});
+
+test('malformed data degrades to unknown, not a crash', async (t) => {
+  const p = await page(t, { status: { updated: 'not a date', watch: 'nope', games: 'nope', notice: 42 } });
   assert.equal(p.chipOf('[data-svc-chip="watch"]').state, 'unknown');
   assert.equal(p.chipOf('article[data-game="zomboid"] [data-chip]').state, 'unknown');
   assert.equal(p.q('#now-updated').textContent, 'Live status');
   assert.equal(p.q('#notice').hidden, true);
-  p.close();
 });
 
-test('a game missing from the data shows unknown', async () => {
+test('a game missing from the data shows unknown', async (t) => {
   const s = await fixture('normal');
   s.games = s.games.filter((g) => g.id !== 'zomboid');
-  const p = await page({ status: s });
+  const p = await page(t, { status: s });
   assert.equal(p.chipOf('article[data-game="zomboid"] [data-chip]').state, 'unknown');
   assert.equal(p.chipOf('article[data-game="mc-hardcore"] [data-chip]').state, 'online');
-  p.close();
 });
 
-test('copy button appears with a clipboard and confirms', async () => {
+test('copy button appears with a clipboard and confirms', async (t) => {
   const written = [];
-  const p = await page({ status: await fixture('normal'), clipboard: { writeText: async (t) => { written.push(t); } } });
+  const p = await page(t, { status: await fixture('normal'), clipboard: { writeText: async (text) => { written.push(text); } } });
   const btn = p.q('article[data-game="mc-hardcore"] [data-copy]');
   assert.equal(btn.hidden, false);
   btn.click();
@@ -233,23 +248,20 @@ test('copy button appears with a clipboard and confirms', async () => {
   assert.deepEqual(written, ['game.homebknet.us:25565']);
   assert.equal(btn.getAttribute('data-copied'), 'done');
   assert.equal(p.q('#live').textContent, 'Address copied to your clipboard');
-  p.close();
 });
 
-test('copy falls back to selecting the address', async () => {
-  const p = await page({ status: await fixture('normal'), clipboard: { writeText: async () => { throw new Error('denied'); } } });
+test('copy falls back to selecting the address', async (t) => {
+  const p = await page(t, { status: await fixture('normal'), clipboard: { writeText: async () => { throw new Error('denied'); } } });
   const btn = p.q('.copy-watch [data-copy]');
   btn.click();
   await tick();
   assert.equal(btn.getAttribute('data-copied'), 'selected');
   assert.equal(p.w.getSelection().toString(), 'https://watch.homebknet.us/watch');
-  p.close();
 });
 
-test('copy buttons stay hidden without a clipboard', async () => {
-  const p = await page({ status: await fixture('normal') });
+test('copy buttons stay hidden without a clipboard', async (t) => {
+  const p = await page(t, { status: await fixture('normal') });
   for (const b of p.d.querySelectorAll('[data-copy]')) assert.equal(b.hidden, true);
-  p.close();
 });
 
 // ---- build: config, privacy guard, atomic output ------------------------------
