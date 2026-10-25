@@ -1,0 +1,11 @@
+{
+  "updated": "2026-10-24T22:41:00Z",
+  "watch": { "state": "offline" },
+  "games": [
+    { "id": "mc-hardcore", "name": "Minecraft Hardcore", "address": "game.homebknet.us:25565",
+      "state": "unknown", "players": null, "maxPlayers": null, "version": null },
+    { "id": "zomboid", "name": "Project Zomboid", "address": "game.homebknet.us:16261",
+      "state": "unknown", "players": null, "maxPlayers": null, "version": null }
+  ],
+  "notice": null
+}

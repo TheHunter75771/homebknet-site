@@ -1,0 +1,16 @@
+{
+  "name": "homebknet-status",
+  "private": true,
+  "type": "module",
+  "description": "Cloudflare Worker that serves /status.json for the homebknet.us homepage. No runtime dependencies.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "mutate": "node test/mutations.mjs",
+    "check": "wrangler deploy --dry-run --outdir .wrangler/dry-run",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "4.123.0"
+  }
+}

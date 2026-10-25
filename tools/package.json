@@ -1,0 +1,14 @@
+{
+  "name": "homebknet-site-tools",
+  "private": true,
+  "type": "module",
+  "description": "Dev-only tools: regenerate icons and the social image, and run the status tests. Not needed to build or deploy.",
+  "scripts": {
+    "images": "node make-images.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "jsdom": "^25.0.1"
+  }
+}

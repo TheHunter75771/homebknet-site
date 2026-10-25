@@ -1,0 +1,11 @@
+{
+  "name": "homebknet-site",
+  "private": true,
+  "type": "module",
+  "description": "Static homepage for homebknet.us, built for Cloudflare Pages. No runtime dependencies.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "node build.mjs",
+    "preview": "node build.mjs --sample-status=normal && python3 -m http.server 8788 --directory preview"
+  }
+}

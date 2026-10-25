@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en" data-owner="{{owner_first_name}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>homebknet</title>
+<meta name="description" content="Movies, shows and game servers for friends and family, self-hosted.">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#161826">
+<link rel="canonical" href="{{site_url}}/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{site_url}}/">
+<meta property="og:title" content="homebknet">
+<meta property="og:description" content="Movies, shows and game servers for friends and family, self-hosted.">
+<meta property="og:image" content="{{site_url}}/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A small house with a lit window under a crescent moon, next to the word homebknet.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/assets/fonts/inter-5.3.0-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+<script src="/assets/status.js" defer></script>
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" focusable="false">
+<defs>
+<symbol id="i-ok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.4l2.8 2.8 5.4-5.4"/></symbol>
+<symbol id="i-fail" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></symbol>
+<symbol id="i-sleep" viewBox="0 0 24 24"><path d="M19.5 14.6A8 8 0 0 1 9.4 4.5a8 8 0 1 0 10.1 10.1Z"/></symbol>
+<symbol id="i-start" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v4.5h-4.5"/></symbol>
+<symbol id="i-unknown" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.6a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.3"/><path d="M12 16.8h.01"/></symbol>
+<symbol id="i-na" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-dasharray="2.5 3"/><path d="M8.5 12h7"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.8h.01"/></symbol>
+<symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3.8 21.2 19.5H2.8Z"/><path d="M12 10v4.2"/><path d="M12 16.9h.01"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.6v12.8a1 1 0 0 0 1.52.85l10.3-6.4a1 1 0 0 0 0-1.7L9.52 4.75A1 1 0 0 0 8 5.6Z"/></symbol>
+<symbol id="i-pad" viewBox="0 0 24 24"><path d="M7.5 8.5h9a4.5 4.5 0 0 1 4.4 5.4l-.5 2.2a2.3 2.3 0 0 1-4 1L15 15.5H9l-1.4 1.6a2.3 2.3 0 0 1-4-1l-.5-2.2a4.5 4.5 0 0 1 4.4-5.4Z"/><path d="M8.5 11v3M7 12.5h3"/><path d="M15.5 12h.01M17.2 13.6h.01"/></symbol>
+<symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 5h5v5"/><path d="M19 5l-8 8"/><path d="M18 14v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h4"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a1 1 0 0 1 1-1h9"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+<symbol id="i-select" viewBox="0 0 24 24"><path d="M5 7V5h2M17 5h2v2M19 17v2h-2M7 19H5v-2"/><path d="M9 12h6"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.2s-7.5-4.6-7.5-10.4A4.3 4.3 0 0 1 12 7a4.3 4.3 0 0 1 7.5 2.8c0 5.8-7.5 10.4-7.5 10.4Z"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.3h2"/></symbol>
+<symbol id="i-android" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2.2"/><path d="M6.5 5.5h11M6.5 18h11"/></symbol>
+<symbol id="i-tv" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="12.5" rx="2"/><path d="M8 20.5h8"/></symbol>
+<symbol id="i-tv2" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="12.5" rx="2"/><path d="M9 20.5h6M12 17v3.5"/></symbol>
+<symbol id="i-stick" viewBox="0 0 24 24"><path d="M8.5 2.5h7v12a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2Z"/><path d="M10.5 16.5v5h3v-5"/></symbol>
+<symbol id="i-box" viewBox="0 0 24 24"><rect x="2.5" y="8" width="19" height="9" rx="2"/><path d="M6.5 12.5h.01M17.5 12.5h-4"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a13.5 13.5 0 0 1 0 18 13.5 13.5 0 0 1 0-18Z"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v4.5h-4.5"/></symbol>
+<symbol id="i-msg" viewBox="0 0 24 24"><path d="M4.5 6.5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H10l-4.5 3.5v-3.5h-1Z"/></symbol>
+<symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l2.5-6 5 12 2.5-6h4"/></symbol>
+<symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+<symbol id="i-code" viewBox="0 0 24 24"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/></symbol>
+<symbol id="i-devices" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="13" height="9" rx="1.6"/><path d="M6 17h6"/><rect x="16.5" y="8" width="5" height="11" rx="1.4"/></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18.5h10.5a4 4 0 0 0 .5-8 6 6 0 0 0-11.6-1.1A4.6 4.6 0 0 0 7 18.5Z"/></symbol>
+<symbol id="i-tunnel" viewBox="0 0 24 24"><path d="M3 20v-8a9 9 0 0 1 18 0v8"/><path d="M8 20v-7a4 4 0 0 1 8 0v7"/></symbol>
+<symbol id="i-server" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="7" rx="2"/><rect x="4" y="13" width="16" height="7" rx="2"/><path d="M8 7.5h.01M8 16.5h.01"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7.5 3v5.5c0 4.6-3.2 7.8-7.5 9-4.3-1.2-7.5-4.4-7.5-9V6Z"/><path d="M9 12l2 2 4-4"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.6"/><rect x="13" y="4" width="7" height="7" rx="1.6"/><rect x="4" y="13" width="7" height="7" rx="1.6"/><rect x="13" y="13" width="7" height="7" rx="1.6"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15Z"/><path d="M10 21h4"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+<symbol id="i-down" viewBox="0 0 14 8"><path d="M1 1l6 6 6-6"/></symbol>
+<symbol id="mark" viewBox="0 0 32 32"><path d="M16 4.5 27.5 13.6V26a1.5 1.5 0 0 1-1.5 1.5H6A1.5 1.5 0 0 1 4.5 26V13.6Z" fill="#9184d9" stroke="#9184d9" stroke-width="3" stroke-linejoin="round"/><path d="M13.8 16.2v8.2l7.1-4.1Z" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+<a href="#watch" class="skip">Skip to Watch</a>
+<p class="sr-only" id="live" aria-live="polite"></p>
+
+<aside class="notice" id="notice" aria-label="Site notice" hidden>
+<div class="notice-in">
+<svg class="ic notice-ic" aria-hidden="true"><use href="#i-info"/></svg>
+<p class="notice-text" id="notice-text"></p>
+<button type="button" class="notice-x" id="notice-x" aria-label="Dismiss notice"><svg class="ic ic-20" aria-hidden="true"><use href="#i-x"/></svg></button>
+</div>
+</aside>
+
+<header class="site-header wrap">
+<a href="#top" class="brand"><svg class="mark" width="30" height="30" aria-hidden="true"><use href="#mark"/></svg><span class="brand-name">homebknet</span></a>
+<nav aria-label="Sections">
+<ul class="nav">
+<li><a href="#watch">Watch</a></li>
+<li><a href="#games">Games</a></li>
+<li><a href="#help">Help</a></li>
+<li><a href="#built">How it’s built</a></li>
+</ul>
+</nav>
+</header>
+
+<main>
+<section id="top" class="hero wrap" aria-labelledby="hero-title">
+<div class="hero-main">
+<h1 id="hero-title" class="h1">Movies, shows and game servers for friends and family, <span class="h1-accent">self-hosted.</span></h1>
+<p class="hero-lead">Pick something to watch or hop into a game. Everything you need is right here.</p>
+<div class="cta-row">
+<a href="https://watch.homebknet.us" class="btn btn-primary"><svg class="ic ic-20 ic-fill" aria-hidden="true"><use href="#i-play"/></svg><span>Start watching</span></a>
+<a href="#games" class="btn btn-quiet"><svg class="ic ic-20" aria-hidden="true"><use href="#i-pad"/></svg><span>Join a game server</span></a>
+</div>
+<p class="hero-down" id="hero-down" hidden><svg class="ic ic-18 hero-down-ic" aria-hidden="true"><use href="#i-fail"/></svg><span>Watch is offline right now. <a href="#help">Here’s what to do</a></span></p>
+</div>
+
+<aside class="now" id="now" data-watch="na" aria-labelledby="now-title">
+<div class="now-head">
+<svg class="now-art" width="52" height="52" viewBox="0 0 52 52" aria-hidden="true"><rect width="52" height="52" rx="15" fill="#2b2741"/><circle cx="37" cy="15" r="6" fill="#e7e5fe"/><circle cx="39.6" cy="12.8" r="5" fill="#2b2741"/><circle cx="12" cy="13" r="1.2" fill="#cfd3e5"/><circle cx="20.5" cy="8.5" r="0.9" fill="#9397ab"/><path d="M12 29.5 26 19l14 10.5V41a1.5 1.5 0 0 1-1.5 1.5h-25A1.5 1.5 0 0 1 12 41Z" fill="#5d5294" stroke="#5d5294" stroke-width="2" stroke-linejoin="round"/><rect class="now-win" x="22" y="30.5" width="8" height="8" rx="2"/></svg>
+<div class="now-head-text">
+<h2 id="now-title" class="now-title">Right now</h2>
+<p class="now-updated" id="now-updated">Live status couldn’t load</p>
+</div>
+</div>
+<ul class="now-list">
+<li class="now-row" data-svc="watch">
+<div class="now-text"><p class="now-name">Watch</p><p class="now-detail" data-detail hidden></p></div>
+<span class="chip" data-chip data-state="na"><svg class="ic chip-ic" aria-hidden="true"><use href="#i-na"/></svg><span class="chip-word">Status unavailable</span></span>
+</li>
+<!-- @now-rows -->
+</ul>
+<p class="now-na" id="now-na">That doesn’t mean anything is down. Everything on this page still works.</p>
+</aside>
+</section>
+
+<section id="watch" class="section wrap" aria-labelledby="watch-title">
+<div class="sec-head">
+<div class="sec-head-text">
+<h2 id="watch-title" class="h2">Watch movies and shows</h2>
+<p class="sec-lead">A private streaming library, a bit like a personal Netflix. You’ll need an account to sign in.</p>
+</div>
+<span class="chip" data-chip data-svc-chip="watch" data-prefix="Watch: " data-state="na"><svg class="ic chip-ic" aria-hidden="true"><use href="#i-na"/></svg><span class="chip-word">Watch: Status unavailable</span></span>
+</div>
+
+<div class="card watch-card">
+<div class="alert alert-fail" id="watch-alert" hidden>
+<svg class="ic ic-22 alert-ic" aria-hidden="true"><use href="#i-fail"/></svg>
+<div>
+<p class="alert-title">Watch is offline right now</p>
+<p class="alert-text">The server usually restarts itself within a few minutes. If it’s still down in an hour, text {{owner_first_name}}.</p>
+</div>
+</div>
+
+<div class="browser-row">
+<div class="browser-text">
+<h3 class="h3">Watch in your browser</h3>
+<p class="body-2">Nothing to install. Works on a laptop, tablet or phone.</p>
+</div>
+<a href="https://watch.homebknet.us" class="btn btn-primary btn-52"><span>Open in your browser</span><svg class="ic ic-18" aria-hidden="true"><use href="#i-ext"/></svg></a>
+</div>
+
+<div class="or" aria-hidden="true"><span></span>or<span></span></div>
+
+<div>
+<h3 class="h3">Use an app on your phone or TV</h3>
+<ol class="steps">
+<li>
+<p class="step-label"><span class="step-num" aria-hidden="true">1</span><span>Get the app for your device</span></p>
+<ul class="platforms">
+<li><a class="platform" href="https://apps.apple.com/app/id1480192618"><svg class="ic ic-22 platform-ic" aria-hidden="true"><use href="#i-phone"/></svg><span>iPhone and iPad</span></a></li>
+<li><a class="platform" href="https://play.google.com/store/apps/details?id=org.jellyfin.mobile"><svg class="ic ic-22 platform-ic" aria-hidden="true"><use href="#i-android"/></svg><span>Android</span></a></li>
+<li><a class="platform" href="https://apps.apple.com/app/id1604098728"><svg class="ic ic-22 platform-ic" aria-hidden="true"><use href="#i-tv"/></svg><span>Apple TV</span></a></li>
+<li><a class="platform" href="https://play.google.com/store/apps/details?id=org.jellyfin.androidtv"><svg class="ic ic-22 platform-ic" aria-hidden="true"><use href="#i-tv2"/></svg><span>Android TV and Google TV</span></a></li>
+<li><a class="platform" href="https://www.amazon.com/gp/aw/d/B07TX7Z725"><svg class="ic ic-22 platform-ic" aria-hidden="true"><use href="#i-stick"/></svg><span>Fire TV</span></a></li>
+<li><a class="platform" href="https://channelstore.roku.com/details/592369/jellyfin"><svg class="ic ic-22 platform-ic" aria-hidden="true"><use href="#i-box"/></svg><span>Roku</span></a></li>
+<li><a class="platform" href="https://watch.homebknet.us"><svg class="ic ic-22 platform-ic" aria-hidden="true"><use href="#i-globe"/></svg><span>Web browser</span></a></li>
+</ul>
+</li>
+<li>
+<p class="step-label"><span class="step-num" aria-hidden="true">2</span><span>When the app asks for a server, enter this address</span></p>
+<div class="copy copy-watch">
+<code class="copy-value" data-copy-value>https://watch.homebknet.us/watch</code>
+<button type="button" class="copy-btn" data-copy hidden><span class="copy-idle"><svg class="ic ic-18" aria-hidden="true"><use href="#i-copy"/></svg>Copy<span class="sr-only"> server address</span></span><span class="copy-done"><svg class="ic ic-18 ic-bold" aria-hidden="true"><use href="#i-check"/></svg>Copied</span><span class="copy-sel"><svg class="ic ic-18" aria-hidden="true"><use href="#i-select"/></svg>Selected</span></button>
+</div>
+</li>
+</ol>
+</div>
+
+<div class="account">
+<p class="body-2"><strong>No account yet?</strong> Ask {{owner_first_name}}. Accounts are set up by hand, so there’s no sign-up form.</p>
+<details class="tips">
+<summary><span>Tips if something seems off</span><svg class="ic ic-20 tips-chev" aria-hidden="true"><use href="#i-chev"/></svg></summary>
+<ul>
+<li><strong>Buffering?</strong> Lower the quality in the player’s settings. 720p is a good place to start.</li>
+<li><strong>Subtitles:</strong> turn them on from the subtitles menu while a video plays. Some titles have more than one language.</li>
+<li><strong>Casting:</strong> the phone apps can cast to a TV. Tap the cast icon while a video is playing. If your TV has its own Jellyfin app, that’s usually smoother.</li>
+</ul>
+</details>
+</div>
+</div>
+</section>
+
+<section id="games" class="section wrap" aria-labelledby="games-title">
+<h2 id="games-title" class="h2">Game servers</h2>
+<p class="sec-lead sec-lead-wide">These run on a separate PC that sleeps when nobody is playing, so seeing one asleep is normal. Nothing is broken.</p>
+<div class="games-grid">
+<!-- @game-cards -->
+</div>
+</section>
+
+<section id="help" class="section wrap" aria-labelledby="help-title">
+<h2 id="help-title" class="h2">Is it down?</h2>
+<p class="sec-lead">Usually not for long. Here’s what to know.</p>
+<div class="help-grid">
+<div class="card help-card">
+<span class="help-ic" aria-hidden="true"><svg class="ic ic-22"><use href="#i-refresh"/></svg></span>
+<h3>It usually fixes itself</h3>
+<p>The server restarts on its own after power cuts and drive hiccups. That normally takes a few minutes.</p>
+</div>
+<div class="card help-card">
+<span class="help-ic" aria-hidden="true"><svg class="ic ic-22"><use href="#i-msg"/></svg></span>
+<h3>Down for more than an hour?</h3>
+<p>Text {{owner_first_name}}. It helps to say what you were trying to watch or play.</p>
+</div>
+<div class="card help-card">
+<span class="help-ic" aria-hidden="true"><svg class="ic ic-22"><use href="#i-pulse"/></svg></span>
+<h3>Check the live status</h3>
+<p>The Right now panel at the top of this page shows what’s running at this moment.</p>
+<a href="#top" class="back-top"><span>Back to the top</span><svg class="ic ic-16 ic-bold" aria-hidden="true"><use href="#i-up"/></svg></a>
+</div>
+</div>
+</section>
+
+<section id="built" class="section wrap built" aria-labelledby="built-title">
+<div class="built-text">
+<p class="eyebrow">For the curious</p>
+<h2 id="built-title" class="h2">How it’s built</h2>
+<p class="built-p">The whole server is written down as code in a public repo, so it can be rebuilt from scratch with one command. When it boots, a gate holds the apps back until the media drive checks out; if it doesn’t, the machine power-cycles once and then alerts a phone instead of looping forever. Admin tools stay on a private network, and only streaming is public, through a Cloudflare tunnel. Backups are pulled every night and checked for integrity.</p>
+<ul class="badges" aria-label="Built with">
+<li>Ubuntu</li><li>Ansible</li><li>Docker</li><li>Tailscale</li><li>Cloudflare</li><li>Jellyfin</li><li>Node</li><li>Python</li><li>GitHub Actions</li>
+</ul>
+<div class="link-row">
+<a href="https://github.com/TheHunter75771/homelab-infra" class="btn btn-quiet btn-52"><svg class="ic ic-20" aria-hidden="true"><use href="#i-code"/></svg><span>View the code on GitHub</span></a>
+<!-- @if portfolio_url -->
+<a href="{{portfolio_url}}" class="btn btn-ghost btn-52"><span>About me</span></a>
+<!-- @endif -->
+</div>
+</div>
+
+<figure class="diagram">
+<ol class="dg" aria-label="How a stream reaches you">
+<li>
+<div class="dg-node"><span class="dg-ic" aria-hidden="true"><svg class="ic ic-22 ic-thin"><use href="#i-devices"/></svg></span><div><p class="dg-title">You</p><p class="dg-sub">Your phone, TV or laptop</p></div></div>
+</li>
+<li>
+<span class="dg-conn" aria-hidden="true"><span></span><svg class="ic"><use href="#i-down"/></svg></span>
+<div class="dg-node"><span class="dg-ic" aria-hidden="true"><svg class="ic ic-22 ic-thin"><use href="#i-cloud"/></svg></span><div><p class="dg-title">Cloudflare</p><p class="dg-sub">The front door for streaming</p></div></div>
+</li>
+<li>
+<span class="dg-conn" aria-hidden="true"><span></span><svg class="ic"><use href="#i-down"/></svg></span>
+<div class="dg-node"><span class="dg-ic" aria-hidden="true"><svg class="ic ic-22 ic-thin"><use href="#i-tunnel"/></svg></span><div><p class="dg-title">Tunnel</p><p class="dg-sub">Encrypted, and opened from the inside</p></div></div>
+</li>
+<li>
+<span class="dg-conn" aria-hidden="true"><span></span><svg class="ic"><use href="#i-down"/></svg></span>
+<div class="dg-node dg-server">
+<div class="dg-server-head"><span class="dg-ic" aria-hidden="true"><svg class="ic ic-22 ic-thin"><use href="#i-server"/></svg></span><div><p class="dg-title">Media server</p><p class="dg-sub">Rebuilt from code with one command</p></div></div>
+<div class="dg-pills"><span class="dg-pill"><svg class="ic ic-16" aria-hidden="true"><use href="#i-shield"/></svg>Boot gate</span><svg class="ic ic-18 dg-pill-arrow" aria-hidden="true"><use href="#i-arrow"/></svg><span class="dg-pill"><svg class="ic ic-16" aria-hidden="true"><use href="#i-grid"/></svg>Apps</span></div>
+<p class="dg-sub dg-note">The apps wait until the media drive checks out.</p>
+</div>
+</li>
+<li>
+<div class="dg-branch"><span class="dg-branch-line" aria-hidden="true"></span><p>Only if the drive still fails after one restart</p></div>
+<div class="dg-node dg-alert"><span class="dg-ic" aria-hidden="true"><svg class="ic ic-22 ic-thin"><use href="#i-bell"/></svg></span><div><p class="dg-title">Phone alert</p><p class="dg-sub">Sent instead of a boot loop</p></div></div>
+</li>
+<li class="dg-private-li">
+<div class="dg-node dg-private"><span class="dg-ic" aria-hidden="true"><svg class="ic ic-20"><use href="#i-lock"/></svg></span><div><p class="dg-title">Private network</p><p class="dg-sub">Admin tools live here. There’s no route in from the internet.</p></div></div>
+</li>
+</ol>
+<figcaption class="dg-caption">Only streaming is public. Everything else stays behind the dashed line.</figcaption>
+</figure>
+</section>
+</main>
+
+<footer class="site-footer">
+<div class="footer-in wrap">
+<div class="footer-col footer-brand">
+<p class="brand brand-sm"><svg class="mark mark-deep" width="26" height="26" aria-hidden="true"><use href="#mark"/></svg><span class="brand-name">homebknet</span></p>
+<p class="footer-note">This page is hosted on Cloudflare Pages, so it stays up even when the server is off.</p>
+</div>
+<div class="footer-col footer-contact">
+<h2 class="footer-h">Get in touch</h2>
+<a href="mailto:{{contact_email}}" class="footer-mail">{{contact_email}}</a>
+<p class="footer-privacy"><svg class="ic ic-18 privacy-ic" aria-hidden="true"><use href="#i-shield"/></svg><span>No tracking. No cookies.</span></p>
+</div>
+<!-- @if outpost_url -->
+<div class="footer-col footer-outpost">
+<a href="{{outpost_url}}" class="outpost">
+<span class="outpost-q">Want a setup like this for your home?</span>
+<span class="outpost-name">Outpost Tech<svg class="ic ic-16 ic-bold" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+</a>
+</div>
+<!-- @endif -->
+</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,25 @@
+[
+  {
+    "id": "mc-hardcore",
+    "name": "Minecraft Hardcore",
+    "game": "Minecraft: Java Edition",
+    "address": "game.homebknet.us:25565",
+    "version": "26.1.2 with Fabric",
+    "mods": "Hardcore Plus+",
+    "rules": {
+      "tone": "warn",
+      "title": "One life, shared by everyone",
+      "text": "If anyone dies, the world is wiped for everybody and starts over on a new seed.",
+      "extra": "Open to join. Your game must be on version 26.1.2."
+    }
+  },
+  {
+    "id": "zomboid",
+    "name": "Project Zomboid",
+    "game": "Project Zomboid",
+    "address": "game.homebknet.us:16261",
+    "version": null,
+    "mods": null,
+    "rules": null
+  }
+]

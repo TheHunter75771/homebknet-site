@@ -1,0 +1,21 @@
+# homebknet-status: serves https://homebknet.us/status.json for the static homepage (Cloudflare Pages).
+# Deploy: npx wrangler login, then npx wrangler deploy (see README.md).
+name = "homebknet-status"
+main = "src/index.js"
+# The newest date the pinned wrangler (package.json) can run locally; raise both together.
+compatibility_date = "2026-08-18"
+
+# Reachable only through the route below: no *.workers.dev address and no preview URLs, so the
+# probes can't be triggered from anywhere that skips the per-data-center cache.
+workers_dev = false
+preview_urls = false
+
+routes = [{ pattern = "homebknet.us/status.json", zone_name = "homebknet.us" }]
+
+[vars]
+# Maintenance banner on the homepage. Plain text, at most 200 characters; empty means no banner.
+NOTICE_TEXT = ""
+# "info" or "warn".
+NOTICE_LEVEL = "info"
+# How long one probe round is reused, in seconds. Clamped to 30..60.
+CACHE_SECONDS = "30"

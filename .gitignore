@@ -1,0 +1,12 @@
+# build output (dist/ is deployed, preview/ is local only and may hold a sample status.json)
+dist/
+preview/
+# temp and replaced folders the build makes next to them; it removes them itself unless killed
+.*-build-*/
+.*-old-*/
+
+node_modules/
+.cache/
+.wrangler/
+.env
+.env.*
