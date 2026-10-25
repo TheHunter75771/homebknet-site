@@ -2,8 +2,8 @@
 # Deploy: npx wrangler login, then npx wrangler deploy (see README.md).
 name = "homebknet-status"
 main = "src/index.js"
-# The newest date the pinned wrangler (package.json) can run locally; raise both together.
-compatibility_date = "2026-08-18"
+# The date the pinned wrangler's workerd declares (require('workerd').compatibilityDate); raise both together.
+compatibility_date = "2026-10-19"
 
 # Reachable only through the route below: no *.workers.dev address and no preview URLs, so the
 # probes can't be triggered from anywhere that skips the per-data-center cache.

@@ -75,6 +75,36 @@ test('package.json: no runtime dependencies, wrangler pinned exactly and locked'
   assert.equal(lock.packages[''].dependencies, undefined);
 });
 
+test('the undici override is exact, patched, and what the lockfile installs', () => {
+  const pkg = JSON.parse(readFileSync(path.join(WORKER, 'package.json'), 'utf8'));
+  const lock = JSON.parse(readFileSync(path.join(WORKER, 'package-lock.json'), 'utf8'));
+  const want = pkg.overrides && pkg.overrides.undici;
+  assert.match(String(want), /^\d+\.\d+\.\d+$/, 'overrides.undici is an exact version');
+  const [maj, min, pat] = want.split('.').map(Number);
+  assert.ok(maj > 7 || (maj === 7 && (min > 30 || (min === 30 && pat >= 1))), `undici ${want} is at least 7.30.1, the patched release`);
+  for (const [key, meta] of Object.entries(lock.packages)) {
+    if (key === 'node_modules/undici' || key.endsWith('/node_modules/undici')) assert.equal(meta.version, want, key);
+  }
+  // A wrangler bump (say, from Dependabot) may ship a newer undici than the override; the override
+  // must never pull it back down. When this fails, raise the override or drop it.
+  const cmp = (a, b) => { const x = a.split('.').map(Number); const y = b.split('.').map(Number); return x[0] - y[0] || x[1] - y[1] || x[2] - y[2]; };
+  for (const [key, meta] of Object.entries(lock.packages)) {
+    const declared = meta.dependencies && meta.dependencies.undici;
+    const exact = declared && /^\d+\.\d+\.\d+$/.test(declared) ? declared : null;
+    if (exact) assert.ok(cmp(want, exact) >= 0, `${key} ships undici ${exact}; the override ${want} would downgrade it`);
+  }
+});
+
+test('compatibility_date is no newer than what the locked workerd supports', () => {
+  const toml = readFileSync(path.join(WORKER, 'wrangler.toml'), 'utf8');
+  const date = toml.match(/^compatibility_date\s*=\s*"([^"]*)"/m)[1];
+  const lock = JSON.parse(readFileSync(path.join(WORKER, 'package-lock.json'), 'utf8'));
+  const workerd = lock.packages['node_modules/workerd'].version; // 1.YYYYMMDD.n
+  const m = /^1\.(\d{4})(\d{2})(\d{2})\./.exec(workerd);
+  assert.ok(m, `workerd version ${workerd}`);
+  assert.ok(date <= `${m[1]}-${m[2]}-${m[3]}`, `compatibility_date ${date} is newer than workerd ${workerd}; wrangler dev would refuse to start`);
+});
+
 // ---- privacy ----------------------------------------------------------------------
 
 function files(dir) {

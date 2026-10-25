@@ -41,6 +41,8 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+      # The gitleaks image is digest-pinned inside run:, which Dependabot doesn't update (its docker
+      # ecosystem only reads Dockerfiles and compose files). Bump the tag and digest by hand.
       - name: gitleaks (full history)
         run: >
           docker run --rm -v "$PWD:/repo" -w /repo

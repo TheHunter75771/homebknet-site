@@ -65,7 +65,7 @@ source (the game PC reporting in), which doesn't exist yet.
 ```bash
 cd worker
 npm test          # node --test, offline; no install needed
-npm run mutate    # breaks 24 guards one at a time and checks the tests catch each one
+npm run mutate    # breaks 27 guards one at a time and checks the tests catch each one
 ```
 
 `fetch`, `connect` and `caches.default` are all faked, so nothing touches the network. One group of tests
@@ -81,7 +81,8 @@ runs when it exists and is skipped otherwise.
 ## Deploy
 
 Before you start, `homebknet.us` must be on the Cloudflare account you sign in with. The route only
-runs once the apex has a proxied DNS record; the Pages custom domain creates one.
+runs once the apex has a proxied DNS record; the Pages custom domain creates one. Deploying needs Node 22
+or newer (wrangler's requirement); the tests alone run on Node 20.
 
 ```bash
 cd worker
@@ -95,7 +96,14 @@ npx wrangler deploy
 `homebknet.us/status.json`. Run `npm run check` first if you want to see the bundle without uploading.
 
 `wrangler` is pinned to an exact version because it holds the Cloudflare login. `compatibility_date` is
-the newest date that version can run locally; when you upgrade wrangler, raise both together.
+the date that version's bundled runtime declares (`node -p "require('workerd').compatibilityDate"`
+after `npm ci`); a test fails if it's newer than the locked runtime. `package.json` also pins `undici`
+through `overrides`, because the wrangler release ships an older one with known advisories; it is only
+used by wrangler's local runtime, never by the deployed Worker.
+
+To upgrade: set the new wrangler version in `package.json`, run `npm install`, set `compatibility_date`
+to the new `workerd` date, check `npm audit` (drop or raise the `undici` override if the new release no
+longer needs it), then `npm test` and `npm run check`.
 
 ## Maintenance notice
 

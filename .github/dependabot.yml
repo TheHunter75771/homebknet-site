@@ -1,0 +1,49 @@
+---
+# Version updates. Security updates are on in the repo settings and arrive as their own PRs.
+# Minor and patch bumps are grouped into one PR per entry; majors stay separate so they get a look.
+# The gitleaks image in workflows/ci.yml is pinned inside a run: step, which Dependabot can't see.
+# Bump that digest by hand.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: ci
+    groups:
+      actions-minor-patch:
+        applies-to: version-updates
+        patterns: ["*"]
+        update-types: [minor, patch]
+
+  # Dev tooling for the site: tests (jsdom) and the image generator. Nothing here ships.
+  - package-ecosystem: npm
+    directory: /tools
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: deps
+      prefix-development: deps-dev
+    groups:
+      tools-minor-patch:
+        applies-to: version-updates
+        patterns: ["*"]
+        update-types: [minor, patch]
+
+  # The status Worker (worker/ is Builder W's module; this entry only schedules its updates).
+  - package-ecosystem: npm
+    directory: /worker
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: deps
+      prefix-development: deps-dev
+    groups:
+      worker-minor-patch:
+        applies-to: version-updates
+        patterns: ["*"]
+        update-types: [minor, patch]

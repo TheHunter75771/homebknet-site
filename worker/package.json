@@ -3,7 +3,9 @@
   "private": true,
   "type": "module",
   "description": "Cloudflare Worker that serves /status.json for the homebknet.us homepage. No runtime dependencies.",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "test": "node --test test/*.test.mjs",
     "mutate": "node test/mutations.mjs",
@@ -11,6 +13,9 @@
     "deploy": "wrangler deploy"
   },
   "devDependencies": {
-    "wrangler": "4.123.0"
+    "wrangler": "4.152.0"
+  },
+  "overrides": {
+    "undici": "7.30.1"
   }
 }
